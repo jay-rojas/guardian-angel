@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardian AI</title>
+</head>
+<body>
+  <h1>Guardian AI</h1>
+  <p>Schedule a safety check-in call. Set your safe word and escalation word.</p>
+
+  <form id="activate-form">
+    <div>
+      <label>Your Phone Number:</label>
+      <input type="tel" id="userPhone" placeholder="+1234567890" required>
+    </div>
+    <div>
+      <label>Check-in Time:</label>
+      <input type="datetime-local" id="scheduledAt" required>
+    </div>
+    <div>
+      <label>Safe Word (means everything is fine):</label>
+      <input type="text" id="safeWord" placeholder="e.g. pineapple" required>
+    </div>
+    <div>
+      <label>Escalation Word (means you need help):</label>
+      <input type="text" id="escalationWord" placeholder="e.g. banana" required>
+    </div>
+    <div>
+      <label>Emergency Contacts (one per line, first = primary):</label>
+      <textarea id="contacts" rows="4" placeholder="+1234567890&#10;+1987654321" required></textarea>
+    </div>
+    <button type="submit">Activate</button>
+  </form>
+
+  <div id="result" style="margin-top: 1em;"></div>
+
+  <script>
+    const form = document.getElementById('activate-form');
+    const result = document.getElementById('result');
+
+    // Set default time to 5 minutes from now
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 5);
+    document.getElementById('scheduledAt').value = now.toISOString().slice(0, 16);
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      result.textContent = 'Activating...';
+      result.style.color = '';
+
+      const contactsText = document.getElementById('contacts').value.trim();
+      const contactLines = contactsText.split('\n').filter(s => s.trim());
+      const contacts = contactLines.map((phone, i) => ({
+        phone: phone.trim(),
+        isPrimary: i === 0
+      }));
+
+      const payload = {
+        userPhone: document.getElementById('userPhone').value.trim(),
+        scheduledAt: new Date(document.getElementById('scheduledAt').value).toISOString(),
+        safeWord: document.getElementById('safeWord').value.trim(),
+        escalationWord: document.getElementById('escalationWord').value.trim(),
+        contacts
+      };
+
+      try {
+        const res = await fetch('/api/activate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          result.textContent = 'Success! ' + data.message + ' Session ID: ' + data.sessionId;
+          result.style.color = 'green';
+        } else {
+          result.textContent = 'Error: ' + (data.error || res.statusText);
+          result.style.color = 'red';
+        }
+      } catch (err) {
+        result.textContent = 'Error: ' + err.message;
+        result.style.color = 'red';
+      }
+    };
+  </script>
+</body>
+</html>
+II
