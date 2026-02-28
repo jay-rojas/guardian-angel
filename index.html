@@ -137,7 +137,19 @@
       align-items:flex-start;
     }
 
-    /* NEW: hen logo */
+    /* Bounce animation for hen */
+    @keyframes henBounce {
+      0%   { transform: translateY(0) scale(1); }
+      35%  { transform: translateY(-14px) scale(1.015); }
+      55%  { transform: translateY(0) scale(0.995); }
+      75%  { transform: translateY(-6px) scale(1.005); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .henLogo { animation: none; }
+    }
+
     .henLogo{
       width: 500px;
       height: 500px;
@@ -145,11 +157,20 @@
       align-items:center;
       justify-content:center;
       padding: 10px;
+
+      animation: henBounce 2.2s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+      will-change: transform;
+      transform: translateZ(0);
     }
+
     .henLogo img{
       width: 100%;
       height: 100%;
       object-fit: contain;
+      display:block;
+      filter: drop-shadow(0 18px 35px rgba(0,0,0,0.35));
+      pointer-events:none;
+      user-select:none;
     }
 
     .badge{
@@ -179,7 +200,6 @@
       border-radius: 3px;
     }
 
-    /* Removed "Guardian AI" title, keep a simple tagline */
     .subtitle{
       margin: 0;
       color: rgba(255,255,255,0.72);
@@ -377,17 +397,16 @@
 
     @media (max-width: 920px){
       .container{ grid-template-columns: 1fr; max-width: 560px; }
+      .henLogo{ width: 320px; height: 320px; }
     }
     @media (max-width: 520px){
       .grid2{ grid-template-columns: 1fr; }
-      .henLogo{ width: 82px; height: 82px; }
+      .henLogo{ width: 240px; height: 240px; }
     }
   </style>
 </head>
 
 <body>
-  <!-- Put your generated chicken logo file in the same folder as this HTML and name it: hen-logo.png -->
-  <!-- If you keep a different name, update the src below -->
   <div class="bg" aria-hidden="true">
     <div class="sky"></div>
     <div class="sun"></div>
