@@ -1,143 +1,80 @@
 /**
- * Database connection and helper functions
+ * Job Scheduler - Triggers outbound Twilio calls at scheduled times
+ *
+ * Strategy: Run a cron job every minute. Query DB for sessions where
+ * scheduled_at <= now and status = 'pending'. Trigger the call for each.
+ *
+ * Persistence: All data is in SQLite. On server restart, we simply
+ * continue running the every-minute check. No in-memory state needed.
  */
-const Database = require('better-sqlite3');
-const path = require('path');
-const fs = require('fs');
+const cron = require('node-cron');
+const db = require('../db').db;
+const { updateSessionStatus, logEvent } = require('../db');
+const { initiateCheckInCall } = require('../services/twilio');
 
-const DB_PATH = path.join(__dirname, '../../data/guardian.db');
+let isRunning = false;
 
-// Ensure data dir exists
-const dataDir = path.dirname(DB_PATH);
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
-}
+/**
+ * Check for due sessions and initiate calls
+ */
+async function checkDueSessions() {
+  if (isRunning) return;
+  isRunning = true;
 
-const db = new Database(DB_PATH);
+  try {
+    const all = db.prepare(`
+      SELECT * FROM sessions WHERE status = 'pending' ORDER BY scheduled_at ASC
+    `).all();
+    const now = new Date();
+    const due = all.filter((s) => new Date(s.scheduled_at) <= now);
 
-// Enable foreign keys
-db.pragma('foreign_keys = ON');
+    if (due.length > 0) {
+      console.log('[Scheduler] Found', due.length, 'due session(s). Initiating calls.');
+    }
 
-// Auto-initialize schema if tables don't exist (so server starts without running init-db)
-const tableExists = db.prepare(
-  "SELECT name FROM sqlite_master WHERE type='table' AND name='sessions'"
-).get();
-if (!tableExists) {
-  const schemaPath = path.join(__dirname, 'schema.sql');
-  const schema = fs.readFileSync(schemaPath, 'utf8');
-  db.exec(schema);
-  console.log('Database schema auto-initialized.');
+    for (const session of due) {
+      try {
+        console.log('[Scheduler] Triggering call for session', session.id, 'to', session.user_phone);
+        logEvent(session.id, 'call_initiated', { userPhone: session.user_phone });
+        updateSessionStatus(session.id, 'active');
+        await initiateCheckInCall(session.user_phone, session.id);
+        logEvent(session.id, 'call_outbound_sent', { userPhone: session.user_phone });
+      } catch (err) {
+        console.error('[Scheduler] Failed to initiate check-in call:', session.id, err.message);
+        logEvent(session.id, 'call_failed', { error: err.message });
+        updateSessionStatus(session.id, 'pending');
+      }
+    }
+  } finally {
+    isRunning = false;
+  }
 }
 
 /**
- * Create a new session
+ * Start the scheduler - runs every minute
  */
-function createSession({ id, userPhone, safeWord, escalationWord, scheduledAt, location = null }) {
-  const stmt = db.prepare(`
-    INSERT INTO sessions (id, user_phone, safe_word, escalation_word, scheduled_at, location, status)
-    VALUES (?, ?, ?, ?, ?, ?, 'pending')
-  `);
-  stmt.run(id, userPhone, safeWord, escalationWord, scheduledAt, location);
-  return id;
+function startScheduler() {
+  cron.schedule('* * * * *', checkDueSessions);
+  console.log('Scheduler started - checking for due sessions every minute');
+  // Also run immediately on startup to catch any missed during downtime
+  checkDueSessions();
 }
 
 /**
- * Add emergency contacts to a session
+ * Add a new session - no need to "add" to scheduler; DB is the source of truth.
+ * The every-minute cron will pick it up when due.
  */
-function addEmergencyContacts(sessionId, contacts) {
-  const stmt = db.prepare(`
-    INSERT INTO emergency_contacts (session_id, phone_number, is_primary, display_order)
-    VALUES (?, ?, ?, ?)
-  `);
-  const insertMany = db.transaction((contacts) => {
-    contacts.forEach((c, i) => {
-      stmt.run(sessionId, c.phone, c.isPrimary ? 1 : 0, i);
-    });
-  });
-  insertMany(contacts);
-}
-
-/**
- * Get session by ID
- */
-function getSession(sessionId) {
-  const session = db.prepare('SELECT * FROM sessions WHERE id = ?').get(sessionId);
-  if (!session) return null;
-  const contacts = db.prepare('SELECT * FROM emergency_contacts WHERE session_id = ? ORDER BY is_primary DESC, display_order')
-    .all(sessionId);
-  return { ...session, contacts };
-}
-
-/**
- * Get all pending sessions (for scheduler on restart)
- */
-function getPendingSessions() {
-  return db.prepare(`
-    SELECT * FROM sessions 
-    WHERE status = 'pending' AND scheduled_at > datetime('now')
-    ORDER BY scheduled_at ASC
-  `).all();
-}
-
-/**
- * Update session status
- */
-function updateSessionStatus(sessionId, status) {
-  db.prepare(`
-    UPDATE sessions SET status = ?, updated_at = datetime('now') WHERE id = ?
-  `).run(status, sessionId);
-}
-
-/**
- * Update session location
- */
-function updateSessionLocation(sessionId, location) {
-  db.prepare(`
-    UPDATE sessions SET location = ?, updated_at = datetime('now') WHERE id = ?
-  `).run(location, sessionId);
-}
-
-/**
- * Log event
- */
-function logEvent(sessionId, eventType, payload = null) {
-  db.prepare(`
-    INSERT INTO event_log (session_id, event_type, payload)
-    VALUES (?, ?, ?)
-  `).run(sessionId, eventType, payload ? JSON.stringify(payload) : null);
-}
-
-/**
- * Get primary contact for a session
- */
-function getPrimaryContact(sessionId) {
-  const c = db.prepare(`
-    SELECT * FROM emergency_contacts WHERE session_id = ? AND is_primary = 1 LIMIT 1
-  `).get(sessionId);
-  if (c) return c;
-  return db.prepare(`
-    SELECT * FROM emergency_contacts WHERE session_id = ? ORDER BY display_order LIMIT 1
-  `).get(sessionId);
-}
-
-/**
- * Get all emergency contacts for a session
- */
-function getEmergencyContacts(sessionId) {
-  return db.prepare(`
-    SELECT * FROM emergency_contacts WHERE session_id = ? ORDER BY is_primary DESC, display_order
-  `).all(sessionId);
+function addSession(session) {
+  const scheduledDate = new Date(session.scheduled_at);
+  if (scheduledDate <= new Date()) {
+    throw new Error('Scheduled time must be in the future');
+  }
+  // Session is already in DB; scheduler will pick it up
+  return true;
 }
 
 module.exports = {
-  db,
-  createSession,
-  addEmergencyContacts,
-  getSession,
-  getPendingSessions,
-  updateSessionStatus,
-  updateSessionLocation,
-  logEvent,
-  getPrimaryContact,
-  getEmergencyContacts,
+  startScheduler,
+  addSession,
+  checkDueSessions,
 };
