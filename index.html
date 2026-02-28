@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guardian AI — Proactive Safety Check-in</title>
+  <title>Proactive Safety Check-in</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,24 +12,11 @@
   <style>
     :root{
       --night:#0b0d12;
-      --ink:#0f141a;
-      --paper:#f7f1da;
-      --sand:#f3e19f;
-      --sun:#ffd773;
-      --clay:#c77b54;
-      --rust:#8b2a22;
-      --wood:#5a2f1e;
-      --wood2:#3b1e13;
-      --navy:#071a3a;
-
-      --card: rgba(15, 20, 26, 0.82);
-      --card2: rgba(15, 20, 26, 0.70);
-      --stroke: rgba(255,255,255,0.10);
-      --stroke2: rgba(255,255,255,0.14);
-
       --text:#ffffff;
       --muted: rgba(255,255,255,0.72);
-      --muted2: rgba(255,255,255,0.56);
+
+      --card: rgba(15, 20, 26, 0.82);
+      --stroke: rgba(255,255,255,0.10);
 
       --accent:#ffb000;
       --accent2:#ff6a3d;
@@ -49,7 +36,6 @@
 
       --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
       --tfast: 0.2s var(--ease);
-      --tmed: 0.35s var(--ease);
     }
 
     *{ box-sizing:border-box; }
@@ -58,7 +44,7 @@
       margin:0;
       min-height:100vh;
       font-family: var(--font-body);
-      color: var(--text);
+      color:var(--text);
       display:flex;
       align-items:center;
       justify-content:center;
@@ -66,120 +52,68 @@
       background:
         radial-gradient(1100px 520px at 50% 10%, rgba(255, 215, 115, 0.22), transparent 55%),
         radial-gradient(900px 520px at 18% 12%, rgba(255, 106, 61, 0.10), transparent 60%),
-        linear-gradient(180deg, rgba(10,12,18,0.92), rgba(10,12,18,0.98)),
-        linear-gradient(180deg, #1b1b1b, #0b0d12);
-      position: relative;
+        linear-gradient(180deg, rgba(10,12,18,0.92), rgba(10,12,18,0.98));
+      position:relative;
       overflow-x:hidden;
     }
 
     /* Wild West illustration background (pure CSS) */
-    .bg{
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events:none;
-      overflow:hidden;
-    }
-
+    .bg{ position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden; }
     .sky{
-      position:absolute;
-      inset:0;
+      position:absolute; inset:0;
       background:
         radial-gradient(1200px 480px at 50% 12%, rgba(255, 246, 214, 0.90), rgba(255, 230, 138, 0.65) 40%, rgba(255, 188, 98, 0.20) 65%, rgba(12,14,20,0.88) 95%),
         linear-gradient(180deg, rgba(255, 244, 210, 0.70), rgba(255, 216, 115, 0.20) 55%, rgba(12,14,20,0.92));
-      filter: saturate(1.05);
     }
-
     .sun{
-      position:absolute;
-      top: 10%;
-      left: 50%;
-      width: 180px;
-      height: 180px;
-      transform: translateX(-50%);
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 50% 50%, rgba(255, 215, 115, 0.95), rgba(255, 176, 0, 0.65) 48%, rgba(255, 176, 0, 0.25) 72%, transparent 76%);
-      filter: blur(0.2px);
-      opacity: 0.9;
+      position:absolute; top:10%; left:50%;
+      width:180px; height:180px; transform:translateX(-50%);
+      border-radius:999px;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 215, 115, 0.95), rgba(255, 176, 0, 0.65) 48%, rgba(255, 176, 0, 0.25) 72%, transparent 76%);
+      opacity:0.9;
     }
-
     .cloud{
-      position:absolute;
-      top: 16%;
-      width: 280px;
-      height: 110px;
+      position:absolute; top:16%;
+      width:280px; height:110px;
       background: rgba(255, 235, 175, 0.22);
       border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 999px;
-      filter: blur(0.1px);
+      border-radius:999px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.18);
     }
-    .cloud::before,
-    .cloud::after{
-      content:"";
-      position:absolute;
+    .cloud::before,.cloud::after{
+      content:""; position:absolute; border-radius:999px;
       background: rgba(255, 235, 175, 0.22);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 999px;
     }
-    .cloud::before{
-      width: 140px;
-      height: 90px;
-      left: 20px;
-      top: -30px;
-    }
-    .cloud::after{
-      width: 160px;
-      height: 100px;
-      right: 18px;
-      top: -38px;
-    }
-    .cloud.c1{ left: 8%; top: 18%; transform: scale(1.05); opacity: 0.85; }
-    .cloud.c2{ right: 10%; top: 22%; transform: scale(0.95); opacity: 0.75; }
-    .cloud.c3{ left: 62%; top: 30%; transform: scale(0.8); opacity: 0.55; }
-
+    .cloud::before{ width:140px; height:90px; left:20px; top:-30px; }
+    .cloud::after{ width:160px; height:100px; right:18px; top:-38px; }
+    .cloud.c1{ left:8%; top:18%; transform:scale(1.05); opacity:0.85; }
+    .cloud.c2{ right:10%; top:22%; transform:scale(0.95); opacity:0.75; }
+    .cloud.c3{ left:62%; top:30%; transform:scale(0.8); opacity:0.55; }
     .mesa{
-      position:absolute;
-      bottom: 24%;
-      left: 50%;
-      width: 560px;
-      height: 170px;
-      transform: translateX(-50%);
-      border-radius: 28px;
-      background:
-        linear-gradient(180deg, rgba(199,123,84,0.70), rgba(139,42,34,0.65)),
-        radial-gradient(280px 120px at 50% 20%, rgba(255,255,255,0.08), transparent 60%);
+      position:absolute; bottom:24%; left:50%;
+      width:560px; height:170px; transform:translateX(-50%);
+      border-radius:28px;
+      background: linear-gradient(180deg, rgba(199,123,84,0.70), rgba(139,42,34,0.65));
       border: 1px solid rgba(255,255,255,0.10);
       box-shadow: 0 30px 90px rgba(0,0,0,0.35);
       clip-path: polygon(6% 66%, 14% 44%, 23% 52%, 30% 30%, 40% 48%, 48% 26%, 58% 52%, 66% 36%, 74% 56%, 82% 42%, 92% 66%, 100% 100%, 0% 100%);
-      opacity: 0.7;
+      opacity:0.7;
     }
-
     .horizon{
-      position:absolute;
-      inset: auto 0 0 0;
-      height: 38%;
-      background:
-        radial-gradient(900px 220px at 50% 0%, rgba(255, 176, 0, 0.12), transparent 55%),
-        linear-gradient(180deg, rgba(18, 22, 30, 0.0), rgba(10, 12, 18, 0.88) 55%, rgba(10, 12, 18, 0.96));
+      position:absolute; inset:auto 0 0 0; height:38%;
+      background: radial-gradient(900px 220px at 50% 0%, rgba(255, 176, 0, 0.12), transparent 55%),
+                  linear-gradient(180deg, rgba(18, 22, 30, 0.0), rgba(10, 12, 18, 0.88) 55%, rgba(10, 12, 18, 0.96));
     }
-
     .ground{
-      position:absolute;
-      inset: auto 0 0 0;
-      height: 32%;
-      background:
-        linear-gradient(180deg, rgba(90,47,30,0.10), rgba(90,47,30,0.35) 35%, rgba(15,20,26,0.95)),
-        radial-gradient(900px 240px at 50% 0%, rgba(255, 106, 61, 0.10), transparent 60%);
+      position:absolute; inset:auto 0 0 0; height:32%;
+      background: linear-gradient(180deg, rgba(90,47,30,0.10), rgba(90,47,30,0.35) 35%, rgba(15,20,26,0.95)),
+                  radial-gradient(900px 240px at 50% 0%, rgba(255, 106, 61, 0.10), transparent 60%);
       border-top: 1px solid rgba(255,255,255,0.08);
     }
-
     .vignette{
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(900px 500px at 50% 30%, transparent 40%, rgba(0,0,0,0.55) 100%);
+      position:absolute; inset:0;
+      background: radial-gradient(900px 500px at 50% 30%, transparent 40%, rgba(0,0,0,0.55) 100%);
       z-index:-1;
     }
 
@@ -193,15 +127,35 @@
       align-items:start;
     }
 
-    .left{
-      padding: 12px 6px;
-    }
+    .left{ padding: 12px 6px; }
 
     .brand{
       display:flex;
       flex-direction:column;
       gap: 14px;
       margin-bottom: 18px;
+      align-items:flex-start;
+    }
+
+    /* NEW: hen logo */
+    .henLogo{
+      width: 92px;
+      height: 92px;
+      border-radius: 24px;
+      background: rgba(10,12,18,0.35);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow-soft);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 10px;
+    }
+    .henLogo img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display:block;
+      filter: drop-shadow(0 14px 30px rgba(0,0,0,0.35));
     }
 
     .badge{
@@ -231,22 +185,7 @@
       border-radius: 3px;
     }
 
-    .title{
-      margin:0;
-      font-family: var(--font-heading);
-      font-weight: 400;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-size: 44px;
-      line-height: 1.05;
-      text-shadow: 0 20px 70px rgba(0,0,0,0.55);
-    }
-
-    .title span{
-      color: var(--accent);
-      text-shadow: 0 18px 60px rgba(255,176,0,0.18);
-    }
-
+    /* Removed "Guardian AI" title, keep a simple tagline */
     .subtitle{
       margin: 0;
       color: rgba(255,255,255,0.72);
@@ -265,16 +204,11 @@
       position: relative;
     }
 
-    .posterInner{
-      padding: 18px 18px 16px;
-    }
+    .posterInner{ padding: 18px 18px 16px; }
 
     .posterTop{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      margin-bottom: 12px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 12px; margin-bottom: 12px;
     }
 
     .posterStamp{
@@ -291,39 +225,25 @@
       white-space: nowrap;
     }
 
-    .posterHint{
-      color: rgba(255,255,255,0.62);
-      font-size: 13px;
-    }
+    .posterHint{ color: rgba(255,255,255,0.62); font-size: 13px; }
 
     .bulletList{
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      margin: 14px 0 0;
-      padding: 0;
+      display:flex; flex-direction:column; gap: 10px;
+      margin: 14px 0 0; padding: 0;
       list-style:none;
       color: rgba(255,255,255,0.78);
       font-size: 14px;
     }
 
-    .bulletList li{
-      display:flex;
-      align-items:flex-start;
-      gap: 10px;
-    }
+    .bulletList li{ display:flex; align-items:flex-start; gap: 10px; }
 
     .dot{
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      margin-top: 6px;
+      width: 10px; height: 10px; border-radius: 999px; margin-top: 6px;
       background: rgba(255, 176, 0, 0.95);
       box-shadow: 0 0 0 4px rgba(255,176,0,0.12);
       flex: 0 0 auto;
     }
 
-    /* Card */
     .card{
       background: var(--card);
       border: 1px solid var(--stroke);
@@ -344,11 +264,7 @@
       pointer-events:none;
     }
 
-    .cardInner{
-      position:relative;
-      z-index:1;
-      padding: 22px;
-    }
+    .cardInner{ position:relative; z-index:1; padding: 22px; }
 
     .cardHeader{
       display:flex;
@@ -377,7 +293,6 @@
       white-space: nowrap;
     }
 
-    /* Form */
     .form-group{ margin-bottom: 14px; }
     label{
       display:block;
@@ -403,17 +318,11 @@
       border: 1px solid rgba(255,255,255,0.10);
       border-radius: var(--radius-sm);
       padding: 13px 14px;
-      transition: border-color var(--tfast), box-shadow var(--tfast), background var(--tfast), transform var(--tfast);
+      transition: border-color var(--tfast), box-shadow var(--tfast), background var(--tfast);
     }
 
-    input::placeholder, textarea::placeholder{
-      color: rgba(255,255,255,0.38);
-    }
-
-    input:hover, textarea:hover{
-      border-color: rgba(255,255,255,0.16);
-    }
-
+    input::placeholder, textarea::placeholder{ color: rgba(255,255,255,0.38); }
+    input:hover, textarea:hover{ border-color: rgba(255,255,255,0.16); }
     input:focus, textarea:focus{
       outline:none;
       border-color: rgba(255, 176, 0, 0.55);
@@ -421,16 +330,9 @@
       background: rgba(10,12,18,0.70);
     }
 
-    textarea{
-      resize: vertical;
-      min-height: 104px;
-    }
+    textarea{ resize: vertical; min-height: 104px; }
 
-    .help{
-      color: rgba(255,255,255,0.50);
-      font-size: 12px;
-      margin-top: 6px;
-    }
+    .help{ color: rgba(255,255,255,0.50); font-size: 12px; margin-top: 6px; }
 
     .btn{
       width:100%;
@@ -454,7 +356,6 @@
       box-shadow: 0 22px 70px rgba(255, 106, 61, 0.26);
       filter: saturate(1.05);
     }
-
     .btn:active{ transform: translateY(0); }
 
     #result{
@@ -480,31 +381,19 @@
       border-color: rgba(239, 68, 68, 0.22);
     }
 
-    /* Animations */
-    .fadeUp{ animation: fadeUp 0.55s var(--ease) both; }
-    .fadeUp2{ animation: fadeUp 0.55s var(--ease) 0.10s both; }
-
-    @keyframes fadeUp{
-      from{ opacity:0; transform: translateY(14px); }
-      to{ opacity:1; transform: translateY(0); }
-    }
-
-    /* Responsive */
     @media (max-width: 920px){
       .container{ grid-template-columns: 1fr; max-width: 560px; }
-      .title{ font-size: 40px; }
-      .subtitle{ max-width: 520px; }
     }
-
     @media (max-width: 520px){
       .grid2{ grid-template-columns: 1fr; }
-      .title{ font-size: 34px; }
-      .badge{ font-size: 11px; }
+      .henLogo{ width: 82px; height: 82px; }
     }
   </style>
 </head>
 
 <body>
+  <!-- Put your generated chicken logo file in the same folder as this HTML and name it: hen-logo.png -->
+  <!-- If you keep a different name, update the src below -->
   <div class="bg" aria-hidden="true">
     <div class="sky"></div>
     <div class="sun"></div>
@@ -518,11 +407,17 @@
   </div>
 
   <div class="container">
-    <section class="left fadeUp">
+    <section class="left">
       <div class="brand">
+        <div class="henLogo">
+          <img src="hen-logo.png" alt="Angel Hen logo">
+        </div>
+
         <div class="badge"><span class="star"></span> Wild West Safety Check</div>
-        <h1 class="title">Guardian <span>AI</span></h1>
-        <p class="subtitle">Schedule a proactive safety check in call. Set a safe word for all clear, and an escalation word if you need help.</p>
+
+        <p class="subtitle">
+          Schedule a proactive safety check in call. Set a safe word for all clear, and an escalation word if you need help.
+        </p>
       </div>
 
       <div class="poster">
@@ -541,7 +436,7 @@
       </div>
     </section>
 
-    <main class="card fadeUp2">
+    <main class="card">
       <div class="cardInner">
         <div class="cardHeader">
           <h2>Activate Check In</h2>
