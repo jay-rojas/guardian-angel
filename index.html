@@ -17,14 +17,14 @@
       --radius:14px;
       --gap:20px;
       --shadow:0 14px 45px rgba(0,0,0,0.45);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
     }
 
     *{ box-sizing:border-box; }
 
     body{
       margin:0;
-      font-family:var(--font-sans);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
       color:var(--text);
       display:flex;
       align-items:center;
@@ -88,18 +88,20 @@
     }
 
     .brand .mark{
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
-      font-size:44px;
-      font-weight:800;
-      letter-spacing:-0.03em;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+      font-size:48px;
+      font-weight:900;
+      letter-spacing:-0.02em;
       color:#ffffff;
       text-shadow:0 6px 22px rgba(0,0,0,0.65);
     }
 
     .lead{
-      color:rgba(255,255,255,0.92);
-      font-size:20px;
+      color:rgba(255,255,255,0.85);
+      font-size:18px;
+      font-weight:500;
       text-shadow:0 4px 16px rgba(0,0,0,0.55);
+      letter-spacing:-0.01em;
     }
 
     .info-card{
@@ -112,16 +114,19 @@
     }
 
     .info-card strong{
-      font-size:18px;
+      font-size:17px;
+      font-weight:700;
       display:block;
       margin-bottom:8px;
+      letter-spacing:-0.01em;
     }
 
     .info-card ul{
       margin:0;
       padding-left:18px;
-      font-size:16px;
-      line-height:1.5;
+      font-size:15px;
+      line-height:1.6;
+      font-weight:400;
     }
 
     .card{
@@ -137,13 +142,16 @@
       margin:0 0 12px;
       font-size:22px;
       font-weight:700;
+      letter-spacing:-0.015em;
     }
 
     label{
       display:block;
-      font-size:15px;
+      font-size:14px;
+      font-weight:600;
       margin:10px 0 4px;
       color:var(--muted);
+      letter-spacing:-0.01em;
     }
 
     input,textarea{
@@ -154,6 +162,8 @@
       background:rgba(0,0,0,0.25);
       color:#ffffff;
       font-size:15px;
+      font-weight:400;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
     }
 
     textarea{ resize:vertical; min-height:80px; }
@@ -172,9 +182,11 @@
       border-radius:12px;
       background:#ffffff;
       color:#000;
-      font-weight:700;
+      font-weight:600;
       font-size:15px;
       cursor:pointer;
+      letter-spacing:-0.01em;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
     }
 
     #result{
