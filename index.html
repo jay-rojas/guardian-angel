@@ -139,18 +139,55 @@
       align-items:flex-start;
     }
 
-    /* Bounce animation for hen */
-    @keyframes henBounce {
-      0%   { transform: translateY(0) scale(1); }
-      35%  { transform: translateY(-14px) scale(1.015); }
-      55%  { transform: translateY(0) scale(0.995); }
-      75%  { transform: translateY(-6px) scale(1.005); }
-      100% { transform: translateY(0) scale(1); }
-    }
+    /* Fluid bounce for the chicken container */
+@keyframes henBounceFluid {
+  0%   { transform: translateY(0) scale(1); }
+  25%  { transform: translateY(-14px) scale(1.01); }
+  50%  { transform: translateY(0) scale(0.995); }
+  75%  { transform: translateY(-7px) scale(1.005); }
+  100% { transform: translateY(0) scale(1); }
+}
 
-    @media (prefers-reduced-motion: reduce) {
-      .henLogo { animation: none; }
-    }
+/* Gentle glow pulse */
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.25; filter: blur(14px); }
+  50%      { opacity: 0.55; filter: blur(18px); }
+}
+
+.henLogo{
+  position: relative;
+  animation: henBounceFluid 2.2s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Add a soft gradient glow behind the chicken */
+.henLogo::before{
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255,176,0,0.55) 0%,
+    rgba(255,106,61,0.28) 35%,
+    rgba(255,176,0,0.00) 70%
+  );
+  z-index: 0;
+  animation: glowPulse 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Keep the image above the glow */
+.henLogo img{
+  position: relative;
+  z-index: 1;
+}
+
+/* Respect accessibility settings */
+@media (prefers-reduced-motion: reduce) {
+  .henLogo{ animation: none; }
+  .henLogo::before{ animation: none; }
+}
 
     .henLogo{
       width: 500px;
