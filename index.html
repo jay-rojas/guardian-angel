@@ -7,11 +7,6 @@
   <link rel="icon" type="image/png" href="hen-logo.png">
   <title>Guardian Angel</title>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Roboto+Flex:wght@400;600;700;800&display=swap" rel="stylesheet">
-
   <style>
     :root{
       --bg:#010817;
@@ -29,13 +24,15 @@
 
     body{
       margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family:var(--font-sans);
       color:var(--text);
       display:flex;
       align-items:center;
       justify-content:center;
       padding:32px 16px;
       min-height:100vh;
+
+      /* Dark overlay + background image */
       background:
         linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.68)),
         url('background.jpg') center/cover no-repeat;
@@ -58,6 +55,7 @@
       gap:12px;
     }
 
+    /* Bounce animation for hen */
     @keyframes henBounce {
       0%   { transform: translateY(0) scale(1); }
       35%  { transform: translateY(-14px) scale(1.015); }
@@ -71,26 +69,26 @@
     }
 
     .henLogo{
-      width:300px;
-      height:300px;
+      width: 300px; 
+      height: 300px; 
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:8px;
+      padding: 8px; 
+
       animation: henBounce 2.2s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
       will-change: transform;
       transform: translateZ(0);
     }
     
-    .henLogo img{
-      width:100%;
-      height:auto;
-      object-fit:contain;
+    .henLogo img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
     }
 
-    /* Guardian Angel title */
     .brand .mark{
-      font-family: "Roboto Flex", "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
       font-size:44px;
       font-weight:800;
       letter-spacing:-0.03em;
@@ -148,7 +146,7 @@
       color:var(--muted);
     }
 
-    input, textarea{
+    input,textarea{
       width:100%;
       padding:10px 12px;
       border-radius:10px;
@@ -158,10 +156,7 @@
       font-size:15px;
     }
 
-    textarea{
-      resize:vertical;
-      min-height:80px;
-    }
+    textarea{ resize:vertical; min-height:80px; }
 
     .row{
       display:grid;
@@ -212,7 +207,7 @@
       <strong>How it works</strong>
       <ul>
         <li>Schedule a one-time check-in call.</li>
-        <li>Respond with your safe word if you’re okay.</li>
+        <li>Respond with your safe word if you're okay.</li>
         <li>Escalation word or no reply notifies contacts.</li>
       </ul>
     </div>
