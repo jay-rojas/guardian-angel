@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Guardian Angel</title>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -72,20 +71,19 @@
       .henLogo { animation: none; }
     }
 
-    .henLogo {
-      width: 60px; /* Reduced from 100px */
-      height: 60px; /* Reduced from 100px */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 5px; /* Slightly reduced padding */
+    .henLogo{
+      width: 80px; 
+      height: 80px; 
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 8px; 
 
       animation: henBounce 2.2s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
       will-change: transform;
       transform: translateZ(0);
     }
-
-    /* Add this right below .henLogo to make sure the image fits the new smaller size */
+    
     .henLogo img {
       width: 100%;
       height: auto;
