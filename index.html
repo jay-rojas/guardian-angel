@@ -9,47 +9,45 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg:#010817;
       --text:#ffffff;
-      --muted:#fff9d9;
-      --card:#011225;
-      --accent:#fff7da;
-      --radius:8px;
-      --gap:18px;
-      --scale:0.75;
-      --shadow:0 8px 30px rgba(0,0,0,0.15);
-      --font-sans:'Inter', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      --muted:rgba(255,255,255,0.9);
+      --card:rgba(5,10,18,0.78);
+      --accent:#ffffff;
+      --radius:14px;
+      --gap:20px;
+      --shadow:0 14px 45px rgba(0,0,0,0.45);
+      --font-sans:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
     }
 
-    *{
-      box-sizing:border-box;
-    }
+    *{ box-sizing:border-box; }
 
     body{
       margin:0;
       font-family:var(--font-sans);
-      background: var(--bg) url('background.jpg') center/100% 100% no-repeat;
       color:var(--text);
       display:flex;
       align-items:center;
       justify-content:center;
       padding:32px 16px;
       min-height:100vh;
+
+      /* Dark overlay + background image */
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.68)),
+        url('background.jpg') center/cover no-repeat;
     }
 
     .container{
       width:100%;
-      max-width:600px;
+      max-width:620px;
       display:flex;
       flex-direction:column;
       gap:var(--gap);
-      padding:var(--gap);
-      transform: scale(var(--scale)) translateY(5%);
-      transform-origin: top center;
       animation: fadeIn 0.6s ease-out forwards;
     }
 
@@ -62,131 +60,127 @@
     }
 
     .henLogo{
-      width:200px;
-      height:200px;
+      width:160px;
+      height:160px;
     }
 
     .henLogo img{
       width:100%;
       height:100%;
       object-fit:contain;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.55));
     }
 
-    /* TITLE */
     .brand .mark{
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      font-size:42px;
-      font-weight:700;
-      letter-spacing:-0.02em;
+      font-size:44px;
+      font-weight:800;
+      letter-spacing:-0.03em;
       color:#ffffff;
-      text-shadow:none;
+      text-shadow:0 6px 22px rgba(0,0,0,0.65);
     }
 
-    /* SUBTITLE */
     .lead{
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      color:rgba(255,255,255,0.85);
-      margin-top:6px;
+      color:rgba(255,255,255,0.92);
       font-size:20px;
+      text-shadow:0 4px 16px rgba(0,0,0,0.55);
     }
 
     .info-card{
-      background: rgba(1, 18, 37, 0.75);
-      padding:20px;
+      background:var(--card);
+      border:1px solid rgba(255,255,255,0.14);
+      padding:22px;
       border-radius:var(--radius);
       box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .info-card strong{
+      font-size:18px;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .info-card ul{
+      margin:0;
+      padding-left:18px;
+      font-size:16px;
+      line-height:1.5;
     }
 
     .card{
-      background: rgba(1, 18, 37, 0.75);
+      background:var(--card);
+      border:1px solid rgba(255,255,255,0.14);
       padding:24px;
       border-radius:var(--radius);
       box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    h2{
+      margin:0 0 12px;
+      font-size:22px;
+      font-weight:700;
     }
 
     label{
       display:block;
-      font-size:18px;
-      margin-bottom:4px;
+      font-size:15px;
+      margin:10px 0 4px;
       color:var(--muted);
-    }
-
-    input,textarea,button{
-      font-family:var(--font-sans);
-      font-size:18px;
     }
 
     input,textarea{
       width:100%;
-      padding:8px 10px;
-      border-radius:8px;
+      padding:10px 12px;
+      border-radius:10px;
       border:1px solid rgba(255,255,255,0.2);
-      background:rgba(0,0,0,0.1);
-      color:var(--text);
+      background:rgba(0,0,0,0.25);
+      color:#ffffff;
+      font-size:15px;
     }
 
-    textarea{
-      resize:vertical;
-      min-height:80px;
-    }
+    textarea{ resize:vertical; min-height:80px; }
 
     .row{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:8px;
+      gap:10px;
     }
 
     .btn{
       width:100%;
-      padding:10px;
+      margin-top:16px;
+      padding:12px;
       border:none;
-      border-radius:8px;
-      background:var(--accent);
-      color:var(--bg);
-      font-weight:600;
+      border-radius:12px;
+      background:#ffffff;
+      color:#000;
+      font-weight:700;
+      font-size:15px;
       cursor:pointer;
     }
 
     #result{
-      margin-top:12px;
-      font-size:17px;
-    }
-
-    #result.success{color:#a3f7bf;}
-    #result.error{color:#f7a3a3;}
-
-    .about-btn{
-      position:fixed;
-      top:20px;
-      right:20px;
-      padding:10px 20px;
-      background:var(--accent);
-      color:var(--bg);
-      border:none;
-      border-radius:8px;
-      font-weight:600;
-      cursor:pointer;
+      margin-top:14px;
       font-size:14px;
-      z-index:1000;
-      transition:opacity 0.3s ease;
     }
 
-    .about-btn:hover{opacity:0.8;}
+    #result.success{ color:#a3f7bf; }
+    #result.error{ color:#f7a3a3; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px) scale(var(--scale)); }
-      to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
+    @keyframes fadeIn{
+      from{ opacity:0; transform:translateY(12px); }
+      to{ opacity:1; transform:translateY(0); }
     }
   </style>
 </head>
 
 <body>
-  <a href="about.html" class="about-btn">About Us</a>
-
   <div class="container">
+
     <div class="brand">
       <div class="henLogo">
-        <img src="hen-logo.png" alt="Hen logo">
+        <img src="wing-logo.png" alt="Guardian Angel logo">
       </div>
       <div class="mark">GUARDIAN ANGEL</div>
       <p class="lead">Quick safety check-in calls with escalation alerts.</p>
@@ -194,87 +188,43 @@
 
     <div class="info-card">
       <strong>How it works</strong>
-      <ul style="margin:8px 0 0 16px;">
+      <ul>
         <li>Schedule a one-time check-in call.</li>
-        <li>Respond with your safe word if you're okay.</li>
+        <li>Respond with your safe word if you’re okay.</li>
         <li>Escalation word or no reply notifies contacts.</li>
       </ul>
     </div>
 
     <div class="card">
-      <h2 style="margin:0 0 8px;">Activate Check In</h2>
+      <h2>Activate Check-In</h2>
 
       <form id="activate-form">
-        <label for="userPhone">Your phone</label>
-        <input type="tel" id="userPhone" placeholder="+1 234 567 8900" required>
+        <label>Your phone</label>
+        <input type="tel" placeholder="+1 234 567 8900" required>
 
-        <label for="scheduledAt" style="margin-top:12px;">Check-in time</label>
-        <input type="datetime-local" id="scheduledAt" required>
+        <label>Check-in time</label>
+        <input type="datetime-local" required>
 
-        <div class="row" style="margin-top:12px;">
+        <div class="row">
           <div>
-            <label for="safeWord">Safe word</label>
-            <input type="text" id="safeWord" placeholder="Apple" required>
+            <label>Safe word</label>
+            <input type="text" placeholder="Apple" required>
           </div>
           <div>
-            <label for="escalationWord">Escalation word</label>
-            <input type="text" id="escalationWord" placeholder="Banana" required>
+            <label>Escalation word</label>
+            <input type="text" placeholder="Banana" required>
           </div>
         </div>
 
-        <label for="contacts" style="margin-top:12px;">Emergency contacts</label>
-        <textarea id="contacts" rows="3" placeholder="+1 234-567-8900" required></textarea>
+        <label>Emergency contacts</label>
+        <textarea placeholder="+1 234-567-8900" required></textarea>
 
-        <button class="btn" type="submit" style="margin-top:16px;">Activate</button>
+        <button class="btn">Activate</button>
       </form>
 
-      <div id="result" role="status" aria-live="polite"></div>
+      <div id="result"></div>
     </div>
+
   </div>
-
-  <script>
-    const form = document.getElementById('activate-form');
-    const result = document.getElementById('result');
-
-    const now = new Date();
-    now.setMinutes(now.getMinutes() + 5);
-    document.getElementById('scheduledAt').value = now.toISOString().slice(0,16);
-
-    form.onsubmit = async e => {
-      e.preventDefault();
-      result.textContent = 'Activating...';
-      result.className = '';
-
-      const lines = document.getElementById('contacts').value.trim().split('\n').filter(s => s.trim());
-      const contacts = lines.map((p,i)=>({ phone:p.trim(), isPrimary:i===0 }));
-
-      const payload = {
-        userPhone: document.getElementById('userPhone').value.trim(),
-        scheduledAt: new Date(document.getElementById('scheduledAt').value).toISOString(),
-        safeWord: document.getElementById('safeWord').value.trim(),
-        escalationWord: document.getElementById('escalationWord').value.trim(),
-        contacts
-      };
-
-      try{
-        const res = await fetch('/api/activate',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(payload)
-        });
-        const data = await res.json();
-        if(res.ok){
-          result.textContent = 'Success! ' + (data.message || '');
-          result.className = 'success';
-        } else {
-          result.textContent = 'Error: ' + (data.error || res.statusText);
-          result.className = 'error';
-        }
-      } catch(err){
-        result.textContent = 'Error: ' + err.message;
-        result.className = 'error';
-      }
-    };
-  </script>
 </body>
 </html>
